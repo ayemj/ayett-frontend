@@ -1,0 +1,189 @@
+<div >
+
+  <app-navbar>
+
+  </app-navbar>
+
+</div>
+<br>
+<div class="container" >
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link {{addAdjustment}}" (click)="goTOAddAdjustments()">Select Absent Teachers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{addException}}" (click)="goTOSelectExceptions()" >Select Exceptions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{summary}}" (click)="goToSummary()">Summary</a>
+        </li>
+      </ul>
+  <div [hidden]="addAdjustments">
+        <!-- <div class="form-group">
+                <label for="usr">Search:</label>
+                <input type="text" class="form-control" id="usr" [(ngModel)]="searchText">
+              </div> -->
+              <br><br>
+              <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>Select</th>
+        <th>Teacher Name</th>
+        <th>Reason</th>
+        <th>More Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teacher of teacherList; let i=index " >
+        <td><div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" value="" [checked]="(selectedTeachers.indexOf(teacher)>-1)?true:false"  (click)="save(teacher,$event)" />
+            </label>
+          </div></td>
+        <td>{{teacher.teacherName}}</td>
+        <td>
+            <div class="form-group">
+                <select class="form-control"   (change)="moreDetails(teacher)" [(ngModel)]="teacher.reasonObj">
+                  <option value="-1">Select</option>
+                  <option *ngFor="let reason of reasonList" [ngValue]="reason" >{{reason.reason}}</option>
+                </select>
+              </div>
+        </td>
+        <td><div *ngIf ="teacher.isParts">
+            <label class="radio-inline"><input type="radio" name="{{i}}"   (change)="setPartValue(teacher,'1st Half')" >1st Half</label>
+            <label class="radio-inline"><input type="radio" name="{{i}}"   (change)="setPartValue(teacher,'2nd Half')" >2nd Half</label>
+            <label class="radio-inline"><input type="radio" name="{{i}}"   (change)="setPartValue(teacher,'Full')">Full</label>
+
+        </div>
+        <div *ngIf="teacher.isTime" >
+          In Time:  <input type="time" [(ngModel)]="teacher.inTime"  >
+          Out Time: <input type="time" [(ngModel)] ="teacher.outTime">
+
+        </div>
+      </td>
+      </tr>
+     
+    </tbody>
+  </table>
+
+  <button type="button" class="btn btn-primary btn-sm btn-block" (click)="goTOSelectExceptions()">Next Step</button>
+  <br>
+</div>
+<!-- Exceptions -->
+<div [hidden]="exceptionTab" > 
+
+    <br><br>
+    <table class="table">
+<thead class="thead-dark">
+<tr>
+<th>Select</th>
+<th>Teacher Name</th>
+<th>Reason</th>
+<th>More Details</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let teacher of restOfTeacherList" >
+<td><div class="form-check">
+  <label class="form-check-label">
+    <input type="checkbox" class="form-check-input" value="" [checked]="(selectedExemptedTeachers.indexOf(teacher)>-1)?true:false"  (click)="saveExempted(teacher,$event)" />
+  </label>
+</div></td>
+<td>{{teacher.teacherName}}</td>
+<td>
+  <div class="form-group">
+    <input  type="text"  [(ngModel)]="teacher.reason" />
+    </div>
+</td>
+<td>
+<div >
+In Time:  <input type="time" [(ngModel)]="teacher.inTime"  >
+Out Time: <input type="time" [(ngModel)] ="teacher.outTime">
+</div>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<button type="button" class="btn btn-primary btn-sm btn-block" (click)="goToSummary()">Next Step</button>
+<br>
+
+</div>
+
+
+
+  <div  [hidden]="confirmationSummary">
+    <br><br>
+    <h3>Absent Teachers</h3>
+
+      <div class="table-responsive-sm">          
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Teacher</th>
+                <th>Reason</th>
+                <th>More Details</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let teacher of selectedTeachers;let i=index">
+                <td>{{i+1}}</td>
+                <td>{{teacher.teacherName}}</td>
+                <td>{{ teacher.reason }}</td>
+                <td>
+
+                  <div *ngIf="teacher.type === 'time'" >
+                    In Time : {{teacher.inTime}}
+                    Out Time : {{teacher.outTime}}
+                  </div>
+                  <div *ngIf="teacher.type === 'parts'" >
+                    {{teacher.part}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="btn-group">
+              <button type="button" class="btn"  (click)="goTOAddAdjustments()">Edit</button>
+            </div>
+
+          </div>
+          <br><br>
+          <h3>Exception Teachers</h3>
+
+      <div class="table-responsive-sm">          
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Teacher</th>
+                <th>Reason</th>
+                <th>Time</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let teacher of selectedExemptedTeachers;let i=index">
+                <td>{{i+1}}</td>
+                <td>{{teacher.teacherName}}</td>
+                <td>{{teacher.reason}}</td>
+                <td>{{teacher.inTime}} - {{teacher.outTime}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="btn-group">
+              <button type="button" class="btn"  (click)="goTOSelectExceptions()">Edit</button>
+           
+              
+            </div>
+
+          </div>
+          <br>
+          <br>
+          <button type="button" class="btn btn-primary btn-block" (click)="initiateAdjustments()">Confirm</button>
+  </div>
+
+</div>

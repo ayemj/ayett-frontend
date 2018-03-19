@@ -1,0 +1,43 @@
+{
+    "adjustmentList": {
+        " Ranbir Singh": [
+            {
+                "class": "X C FM",
+                "teacherId": "5aa442a8ab6f540de2fe397a",
+                "teacherName": " Ranbir Singh",
+                "startTime": "10:55",
+                "endTime": "11:45",
+                "percentage": 100
+            }
+        ],
+        " Chamandeep Kaur": [
+            {
+                "class": "XI C",
+                "teacherId": "5aa442a8ab6f540de2fe3979",
+                "teacherName": " Chamandeep Kaur",
+                "startTime": "10:55",
+                "endTime": "11:45",
+                "percentage": 100
+            },
+            {
+                "class": "IX B IT",
+                "teacherId": "5aa442a8ab6f540de2fe3979",
+                "teacherName": " Chamandeep Kaur",
+                "startTime": "12:20",
+                "endTime": "1:10",
+                "percentage": 100
+            }
+        ],
+        " Manpreet PGT": [
+            {
+                "class": "X B FM",
+                "teacherId": "5aa442a8ab6f540de2fe397e",
+                "teacherName": " Manpreet PGT",
+                "startTime": "1:10",
+                "endTime": "2:00",
+                "percentage": 100
+            }
+        ]
+    },
+    "failedAdjustmentList": []
+}
