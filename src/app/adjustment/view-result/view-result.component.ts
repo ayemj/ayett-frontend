@@ -7,7 +7,7 @@ import { ServiceService } from '../../service.service';
 })
 export class ViewResultComponent implements OnInit {
 
-  constructor(private serviceObj: ServiceService) { }
+  constructor(public serviceObj: ServiceService) { }
 
   ngOnInit() {
   }
