@@ -24,7 +24,7 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.get('http://localhost:8080/fetchData/getTeacherList', httpOptions);
+    return this.http.get('https://infinite-escarpment-72745.herokuapp.com/fetchData/getTeacherList', httpOptions);
 
   }
 
@@ -36,7 +36,7 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.get('http://localhost:8080/fetchData/getReasons', httpOptions);
+    return this.http.get('https://infinite-escarpment-72745.herokuapp.com/fetchData/getReasons', httpOptions);
 
 
   }
@@ -47,7 +47,7 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.post('http://localhost:8080/adjustments/getAdjustments', obj , httpOptions);
+    return this.http.post('https://infinite-escarpment-72745.herokuapp.com/adjustments/getAdjustments', obj , httpOptions);
 
 
   }

@@ -73,7 +73,7 @@ export class NavbarComponent implements OnInit {
 
     });
 
-    this.http.post('http://localhost:8080/UploadFiles/uploadTimeTable', formModel, httpOptions)
+    this.http.post('https://infinite-escarpment-72745.herokuapp.com/UploadFiles/uploadTimeTable', formModel, httpOptions)
       .subscribe(
         res => {
           alert('done!');

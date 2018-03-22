@@ -55,7 +55,7 @@ export class AuthenticationService {
 
   public loginMe(user: TokenPayLoad) {
 
-    const response = this.http.post('http://localhost:8080/api/login',user).pipe(map((data: TokenResponse) => {
+    const response = this.http.post('https://infinite-escarpment-72745.herokuapp.com/api/login',user).pipe(map((data: TokenResponse) => {
       if (data.token) {
         this.saveToken(data.token);
       }
