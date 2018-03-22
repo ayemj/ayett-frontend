@@ -6,11 +6,9 @@ import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShowOnDirtyErrorStateMatcher, ErrorStateMatcher, MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule } from '@angular/material';
 import { AppComponent } from './app.component';
-import { TimeTableComponent } from './time-table/time-table.component';
 import { LoginComponent } from './login/login.component';
-import { StudentTimeTableComponent } from './time-table/student-time-table/student-time-table.component';
-import { TeacherTimeTableComponent } from './time-table/teacher-time-table/teacher-time-table.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { StudentTimeTableComponent } from './time-table/student-time-table/student-time-table.component';
+// import { TeacherTimeTableComponent } from './time-table/teacher-time-table/teacher-time-table.component';
 import {MatInputModule} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
@@ -38,13 +36,13 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     
-    TimeTableComponent,
+    
     
       LoginComponent,
      
-     StudentTimeTableComponent,
-     TeacherTimeTableComponent,
-     DashboardComponent,
+     
+     
+     
      AdjustmentComponent,
      AddAdjustmentsComponent,
      ViewResultComponent,
