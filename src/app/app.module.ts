@@ -28,6 +28,8 @@ import { ServiceService } from  './service.service';
 import { AuthenticationService } from './auth/authentication.service';
 import { ViewAdjustmentsComponent } from './adjustment/view-adjustments/view-adjustments.component';
 import { EditAdjustmentsComponent } from './adjustment/edit-adjustments/edit-adjustments.component';
+import { ViewDetailsComponent } from './master/teacher-details/view-details/view-details.component';
+import { TeacherDetailsComponent } from './master/teacher-details/teacher-details.component';
 
 const routes: Routes = [
   {path : '', component: LoginComponent},
@@ -59,6 +61,12 @@ const routes: Routes = [
      NavbarComponent,
      ViewAdjustmentsComponent,
      EditAdjustmentsComponent,
+    
+     ViewDetailsComponent,
+     TeacherDetailsComponent,
+     
+     ViewDetailsComponent,
+     ViewDetailsComponent
   ],
   imports: [
     BrowserModule,
