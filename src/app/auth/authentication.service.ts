@@ -7,16 +7,16 @@ import { map } from 'rxjs/operators/map';
 @Injectable()
 export class AuthenticationService {
 
-  private token: string;
+  public token: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(public http: HttpClient, public router: Router) {}
 
-  private saveToken(token: string): void {
+  public saveToken(token: string): void {
     localStorage.setItem('mean-token', token);
     this.token = token;
   }
 
-  private getToken(): string {
+  public getToken(): string {
     if (!this.token) {
       this.token = localStorage.getItem('mean-token');
     }
@@ -55,7 +55,7 @@ export class AuthenticationService {
 
   public loginMe(user: TokenPayLoad) {
 
-    const response = this.http.post('https://infinite-escarpment-72745.herokuapp.com/api/login',user).pipe(map((data: TokenResponse) => {
+    const response = this.http.post('http://localhost:8080/api/login',user).pipe(map((data: TokenResponse) => {
       if (data.token) {
         this.saveToken(data.token);
       }

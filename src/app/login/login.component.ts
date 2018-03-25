@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   public error: string;
-  constructor(private authService: AuthenticationService, private service: ServiceService, private router: Router, private fb: FormBuilder) {
+  constructor(public authService: AuthenticationService, public service: ServiceService, public router: Router, public fb: FormBuilder) {
     this.createForm();
    }
 

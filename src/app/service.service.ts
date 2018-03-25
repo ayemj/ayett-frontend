@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AdjustmentRecieve } from './app-interface';
+import { AdjustmentRecieve, PreviousAdjustmentResponse, AdjustmentSend, TeacherList, EditTeachers } from './app-interface';
  
 @Injectable()
 export class ServiceService {
@@ -10,9 +10,15 @@ export class ServiceService {
 
   public successfullAdjustments: AdjustmentRecieve[] = [];
   public failedAdjustments: AdjustmentRecieve[] = [];
-  
+  public haveAdjustments = false;
+  public previousAdjustment: PreviousAdjustmentResponse;
+  public onEdit = false;
+  public addAbsentList: TeacherList[] = [];
+  public addExceptionList: TeacherList[] = [];
   public afterLogin:boolean;
-  constructor(private http: HttpClient) { 
+  public absentList: EditTeachers[] = [];
+  public exceptionList: EditTeachers[] = [];
+  constructor(public http: HttpClient) { 
 
     this.afterLogin = false;
     
@@ -24,7 +30,7 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.get('https://infinite-escarpment-72745.herokuapp.com/fetchData/getTeacherList', httpOptions);
+    return this.http.get('http://localhost:8080/fetchData/getTeacherList', httpOptions);
 
   }
 
@@ -36,7 +42,7 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.get('https://infinite-escarpment-72745.herokuapp.com/fetchData/getReasons', httpOptions);
+    return this.http.get('http://localhost:8080/fetchData/getReasons', httpOptions);
 
 
   }
@@ -47,8 +53,42 @@ export class ServiceService {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
     };
 
-    return this.http.post('https://infinite-escarpment-72745.herokuapp.com/adjustments/getAdjustments', obj , httpOptions);
+    return this.http.post('http://localhost:8080/adjustments/getAdjustments', obj , httpOptions);
 
 
   }
+
+  getPreviousAdjustments() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
+    };
+
+    return this.http.get('http://localhost:8080/edit-adjustments/fetchPreviousAdjustment',httpOptions);
+    
+  }
+
+  editAdjustments(obj) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
+    };
+
+    return this.http.post('http://localhost:8080/edit-adjustments/changeAdjustments', obj, httpOptions);
+
+
+  }
+
+  discardAdjustments() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('mean-token') })
+    };
+
+    return this.http.get('http://localhost:8080/adjustments/discardAdjustments', httpOptions);
+    
+
+  }
+
+  
 }

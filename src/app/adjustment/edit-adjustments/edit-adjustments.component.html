@@ -1,0 +1,271 @@
+<div >
+
+  <app-navbar>
+
+  </app-navbar>
+
+</div>
+<br><br>
+<div class="container">
+
+  
+  <div class="row">
+  <div class="col-sm-6"></div>
+  <div class="col-sm-2"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#teacherAdd" (click)="loadAdjustment()">+ Add New</button>
+  </div>
+     <div class="col-sm-2"><button type="button" class="btn btn-link"  >Discard Changes</button></div>
+    <div class="col-sm-2"><button type="button" class="btn btn-link" (click)="discardAdjustments()">Discard Adjustments</button></div>
+
+  
+  </div>
+  <br><br>
+  <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-10">Saved Absent List</div>
+          <div class="col"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#teacherEdit" (click)="editCall('absent')">Edit</button></div>
+        </div>  
+      </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Teacher</th>
+                <th>Reason</th>
+                <th>In Time - Out Time</th>
+             
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let teacher of serviceObj.absentList">
+                <td>{{ teacher.teacherName }}</td>
+                <td>{{ teacher.reason }}</td>
+                <td>{{ teacher.startTime }} - {{ teacher.endTime }}</td>
+            
+              </tr>
+              <tr class="table-danger" *ngFor ="let teacherEdit of editAbsentList">
+
+                  <td>{{ teacherEdit.teacherName }}</td>
+                  <td>{{ teacherEdit.reason }}</td>
+                  <td *ngIf="teacherEdit.status === 'Complete'">
+                    {{teacherEdit.status}}
+                  </td>
+                  <td *ngIf="teacherEdit.status === 'Partial'">
+                      {{ teacherEdit.inTime }} - {{ teacherEdit.outTime }}
+                  </td>
+
+              </tr>
+        </tbody>
+          </table>
+
+      </div>
+  </div>  
+  <div  *ngIf="(serviceObj.addAbsentList.length > 0)?true:false">
+    <br><br>
+  <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-10">Added Absent List</div>
+        </div> 
+      </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+              <tr>
+         
+                  <th>Teacher</th>
+                  <th>Reason</th>
+                  <th>More Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let teacher of serviceObj.addAbsentList">
+               
+                  <td>{{teacher.teacherName}}</td>
+                  <td>{{ teacher.reason }}</td>
+                  <td>
+  
+                    <div *ngIf="teacher.type === 'time'" >
+                      In Time : {{teacher.inTime}}
+                      Out Time : {{teacher.outTime}}
+                    </div>
+                    <div *ngIf="teacher.type === 'parts'" >
+                      {{teacher.part}}
+                    </div>
+                  </td>
+              </tr>    
+        </tbody>
+          </table>
+
+      </div>
+  </div>
+</div>  
+<!-- edit modal -->
+
+<div class="modal fade" id="teacherEdit" >
+    <div class="modal-dialog modal-dialog-centered modal-lg" >
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Absent List</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Teacher</th>
+                    <th>Reason</th>
+                    <th>Type</th>
+                    <th>More Options</th>
+                 
+                  </tr>
+                </thead>
+                <tbody>
+                   <tr *ngFor ="let teacher of listToEdit">
+                    <td>{{ teacher.teacherName }}</td>
+                    <td>{{ teacher.reason }}</td>
+                    <td>
+                        <select class="form-control"    [(ngModel)]="teacher.status">
+                            <option value="-1">Select</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Partial">Partial</option>
+                          </select>
+                    </td>
+
+                    <td *ngIf="teacher.status === 'Partial'">
+                        In Time:  <input type="time" [(ngModel)]="teacher.inTime"  >
+                        Out Time: <input type="time" [(ngModel)] ="teacher.outTime">
+                    </td>
+                  </tr>    
+            </tbody>
+              </table>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="saveEdits(editGrid)">Ok</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="cancelAll(editGrid)" >Cancel</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+<!-- adjustment component modal -->
+          <!-- The Modal -->
+          <div class="modal fade" id="teacherAdd" >
+            <div class="modal-dialog modal-dialog-centered modal-lg" >
+              <div class="modal-content">
+          
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">New Selections</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+          
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf = "loadAdjustmentFlag">
+                  <app-adjustment></app-adjustment>
+                </div>
+          
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Ok</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteAllData()" >Cancel</button>
+                </div>
+          
+              </div>
+            </div>
+          </div>
+    
+  <br><br>
+
+  <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-10">Saved Exception List</div>
+          <div class="col"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#teacherEdit" (click)="editCall('exception')">Edit</button></div>
+        </div>
+      </div>
+   
+    <div class="card-body">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Teacher</th>
+                <th>Reason</th>
+                <th>In Time - Out Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let teacher of serviceObj.exceptionList">
+                <td>{{ teacher.teacherName }}</td>
+                <td>{{ teacher.reason }}</td>
+                <td>{{ teacher.startTime }} - {{ teacher.endTime }}</td>
+    
+              </tr>
+              <tr class="table-danger" *ngFor ="let teacherEdit of editExceptionList">
+
+                  <td>{{ teacherEdit.teacherName }}</td>
+                  <td>{{ teacherEdit.reason }}</td>
+                  <td *ngIf="teacherEdit.status === 'Complete'">
+                    {{teacherEdit.status}}
+                  </td>
+                  <td *ngIf="teacherEdit.status === 'Partial'">
+                      {{ teacherEdit.inTime }} - {{ teacherEdit.outTime }}
+                  </td>
+
+              </tr>
+
+            </tbody>
+          </table>
+
+      </div>
+      </div>
+<div   *ngIf="(serviceObj.addExceptionList.length > 0)?true:false">
+  <br><br>
+  <div class="card">
+  <div class="card-header">
+      <div class="row">
+        <div class="col-sm-10">Added Exception List</div>
+      </div>
+    </div>
+      <div class="card-body">
+          <table class="table">
+              <thead>
+                <tr>
+                    <tr>
+                      
+                        <th>Reason</th>
+                        <th>More Details</th>
+                        
+                      </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor ="let teacher of serviceObj.addExceptionList">
+                  
+                    <td>{{teacher.teacherName}}</td>
+                    <td>{{teacher.reason}}</td>
+                    <td>{{teacher.inTime}} - {{teacher.outTime}}</td>    
+                </tr>
+              </tbody>
+            </table>
+  
+        </div>
+  </div>
+      </div>
+<br><br>
+      <button type="button" class="btn btn-primary btn-block" (click)="generateAgain()">Generate Adjustments</button>
+ <br><br>     
+    </div>
+
+

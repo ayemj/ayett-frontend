@@ -23,7 +23,7 @@ export class Reason {
 
 }
 
-export interface TeacherList {
+export class TeacherList {
 
   _id: string;
   teacherName: string;
@@ -38,7 +38,7 @@ export interface TeacherList {
 
 }
 
-export interface AdjustmentShow {
+export class AdjustmentShow {
 
   class: string;
   teacherId: string;
@@ -60,6 +60,18 @@ export class AdjustmentSend {
 
 }
 
+export class EditTeachers {
+
+  _id: string;
+  teacherName: string;
+  reason: string;
+  type: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+
+}
+
 export class AdjustmentRecieve {
 
   class: string;
@@ -68,5 +80,29 @@ export class AdjustmentRecieve {
   startTime: string;
   endTime: string;
   percentage: number;
+  previousId: string;
+  previousTeacherName: string; 
+
+}
+
+export class PreviousAdjustmentResponse {
+
+  absentList: EditTeachers[];
+  adjustmentList: AdjustmentRecieve[];
+  date: string;
+  dayOfWeek: number;
+  exceptionList: EditTeachers[];
+  failedAdjustmentList: AdjustmentRecieve[];
+  username: string;
+
+}
+
+
+export class SendEditedAdjustments {
+
+  editAbsentList: EditTeachers[];
+  addAbsentList: AdjustmentSend[];
+  addExceptionList: AdjustmentSend[];
+  editExceptionList: EditTeachers[]; 
 
 }

@@ -1,4 +1,4 @@
-<div >
+<div *ngIf="!serviceObj.onEdit">
 
   <app-navbar>
 
@@ -19,10 +19,11 @@
         </li>
       </ul>
   <div [hidden]="addAdjustments">
-        <!-- <div class="form-group">
+    <br>
+        <div class="form-group">
                 <label for="usr">Search:</label>
-                <input type="text" class="form-control" id="usr" [(ngModel)]="searchText">
-              </div> -->
+                <input type="text" class="form-control" id="usr" [(ngModel)]="searchTextAdj">
+              </div>
               <br><br>
               <table class="table">
     <thead class="thead-dark">
@@ -34,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let teacher of teacherList; let i=index " >
+      <tr *ngFor="let teacher of teacherList | searchString: searchTextAdj; let i=index " >
         <td><div class="form-check">
             <label class="form-check-label">
               <input type="checkbox" class="form-check-input" value="" [checked]="(selectedTeachers.indexOf(teacher)>-1)?true:false"  (click)="save(teacher,$event)" />
@@ -71,8 +72,14 @@
 </div>
 <!-- Exceptions -->
 <div [hidden]="exceptionTab" > 
-
+  <br>
+  <div class="form-group">
+    <label for="usr">Search:</label>
+    <input type="text" class="form-control" id="usr" [(ngModel)]="searchTextExc">
+  </div>
+  <br><br>
     <br><br>
+
     <table class="table">
 <thead class="thead-dark">
 <tr>
@@ -83,7 +90,7 @@
 </tr>
 </thead>
 <tbody>
-<tr *ngFor="let teacher of restOfTeacherList" >
+<tr *ngFor="let teacher of restOfTeacherList | searchString: searchTextExc" >
 <td><div class="form-check">
   <label class="form-check-label">
     <input type="checkbox" class="form-check-input" value="" [checked]="(selectedExemptedTeachers.indexOf(teacher)>-1)?true:false"  (click)="saveExempted(teacher,$event)" />
@@ -183,7 +190,8 @@ Out Time: <input type="time" [(ngModel)] ="teacher.outTime">
           </div>
           <br>
           <br>
-          <button type="button" class="btn btn-primary btn-block" (click)="initiateAdjustments()">Confirm</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="initiateAdjustments()" *ngIf="!serviceObj.onEdit">Confirm</button>
+          <button type="button" class="btn btn-primary btn-block" (click)="saveForEdit()" *ngIf="serviceObj.onEdit">Add </button>
   </div>
 
 </div>

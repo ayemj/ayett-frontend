@@ -18,7 +18,7 @@ export class AppComponent {
 
   @ViewChild('teacherTT') teacherTT: ElementRef;
   @ViewChild('classTT') classTT: ElementRef;
-  constructor(private router: Router, private fb: FormBuilder, private http: HttpClient) {
+  constructor(public router: Router, public fb: FormBuilder, public http: HttpClient) {
     //call auth service
     // check if logged in ----> showLogin = false
     //check if not logged in ----> showLogin = true
@@ -40,7 +40,7 @@ export class AppComponent {
   }
 
   
-  private prepareSave(): any {
+  public prepareSave(): any {
     let input = new FormData();
     input.append('teacherCsvData', this.form.get('classTT').value);
     input.append('classCsvData', this.form.get('teacherTT').value);

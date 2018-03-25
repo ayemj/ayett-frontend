@@ -4,10 +4,10 @@ import { SearchPipe } from '../searchPipe';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ServiceService } from '../service.service';
 import { TeacherList, Reason, AdjustmentRecieve, AdjustmentSend } from '../app-interface';
-
+  
 @Component({
   selector: 'app-adjustment',
-
+  
   templateUrl: './adjustment.component.html',
   styleUrls: ['./adjustment.component.css']
 })
@@ -19,7 +19,8 @@ export class AdjustmentComponent implements OnInit {
   public selectedTeachers : TeacherList[] = [];
   public restOfTeacherList: TeacherList[] = [];
   public selectedExemptedTeachers: TeacherList[]= [];
-  public searchText = '';
+  public searchTextAdj = '';
+  public searchTextExc = ''
   public teacherList : TeacherList[];
   public reasonList: Reason[] ;
   public successfullAdjustments: AdjustmentRecieve[] = [];
@@ -27,12 +28,13 @@ export class AdjustmentComponent implements OnInit {
   public addAdjustment = 'active';
   public addException = '';
   public summary = '';
+  
 
-
-  constructor(private router: Router, private http : HttpClient, private serviceObj :ServiceService) {
+  constructor(public router: Router, public http : HttpClient, public serviceObj :ServiceService) {
     this.serviceObj.getTeachersList().subscribe((data: TeacherList[]) => {
       this.teacherList = [];
       this.teacherList = data;
+      this.removeSavedTeachers(); 
     });
     this.serviceObj.getReasonList().subscribe((data: Reason[]) => {
 
@@ -40,14 +42,58 @@ export class AdjustmentComponent implements OnInit {
       this.reasonList = data;
 
     })
-
+    
    }
 
   ngOnInit() {
 
+
     this.addAdjustments = false;
     this.confirmationSummary = true;
     this.exceptionTab = true;
+    
+  }
+
+
+  removeSavedTeachers() {
+
+    if (this.serviceObj.onEdit) {
+
+      const teacherListTemp = [];
+
+    if (this.teacherList.length > 0)  {
+
+     if (this.serviceObj.absentList.length > 0) {
+
+      for( var i=this.teacherList.length - 1; i>=0; i--){
+        for( var j=0; j<this.serviceObj.absentList.length; j++){
+            if(this.teacherList[i] && (this.teacherList[i]._id === this.serviceObj.absentList[j]._id)){
+              this.teacherList.splice(i, 1);
+           }
+         }
+     }
+
+
+     } 
+
+     if (this.serviceObj.exceptionList.length >  0) {
+
+
+      for( var i=this.teacherList.length - 1; i>=0; i--){
+        for( var j=0; j<this.serviceObj.exceptionList.length; j++){
+            if(this.teacherList[i] && (this.teacherList[i]._id === this.serviceObj.exceptionList[j]._id)){
+              this.teacherList.splice(i, 1);
+           }
+         }
+     }
+
+     } 
+
+
+
+    }
+
+    }
 
   }
 
@@ -71,12 +117,12 @@ export class AdjustmentComponent implements OnInit {
     this.addException = 'active';
     this.summary = '';
     this.getRestOfTeacherList();
-
+    
   }
 
   goToSummary() {
 
-
+    
     this.addAdjustments = true;
     this.confirmationSummary = false;
     this.exceptionTab = true;
@@ -93,7 +139,7 @@ export class AdjustmentComponent implements OnInit {
 
       if (!(this.selectedTeachers.indexOf(this.teacherList[i]) > -1)) {
         this.restOfTeacherList.push(this.teacherList[i]);
-      }
+      } 
 
     }
 
@@ -125,7 +171,7 @@ export class AdjustmentComponent implements OnInit {
     console.log(this.selectedExemptedTeachers);
     let selectedAbsentTeachers: AdjustmentSend[] = [];
     let exemptedTeachersList: AdjustmentSend[] = [];
-
+    
     for (let k = 0 ; k < this.selectedTeachers.length ; k++ ) {
       const teacher = this.selectedTeachers[k]
       const tempTeacher = new AdjustmentSend();
@@ -154,9 +200,10 @@ export class AdjustmentComponent implements OnInit {
     obj.absentList = selectedAbsentTeachers;
     obj.exceptionList = exemptedTeachersList;
     this.serviceObj.initiateAdjustments(obj).subscribe(adjustmentsResult => {
-
       adjustedAdjustmentMap = adjustmentsResult['adjustmentList'];
       failedAdjustmentMap = adjustmentsResult['failedAdjustmentList'];
+      this.serviceObj.successfullAdjustments = [];
+      this.serviceObj.failedAdjustments = [];
       let adjustedKeyList = Object.keys(adjustedAdjustmentMap);
       for (let j= 0 ; j < adjustedKeyList.length ; j++) {
 
@@ -179,17 +226,18 @@ export class AdjustmentComponent implements OnInit {
       }
 
       }
-      this.router.navigate(['adjustments','viewAdjustments'])
+      this.serviceObj.haveAdjustments = true;      
+      this.router.navigate(['adjustments','viewAdjustments']) 
     });
-
+    
 
   }
-
+  
   save(teacher,event) {
-    ;
+    
     if (!(this.selectedTeachers)) {
       this.selectedTeachers = [];
-    }
+    } 
     if (event.target.checked) {
       if (!(this.selectedTeachers.indexOf(teacher) > -1)) {
         this.selectedTeachers.push(teacher)
@@ -206,7 +254,7 @@ export class AdjustmentComponent implements OnInit {
 
     if (!(this.selectedExemptedTeachers)) {
       this.selectedExemptedTeachers = [];
-    }
+    } 
     if (event.target.checked) {
       if (!(this.selectedExemptedTeachers.indexOf(teacher) > -1)) {
         this.selectedExemptedTeachers.push(teacher)
@@ -219,10 +267,10 @@ export class AdjustmentComponent implements OnInit {
 
   }
 
-
+  
 
   moreDetails(teacher) {
-    ;
+    
     if (teacher.reasonObj.type === 'parts') {
       teacher.reason = teacher.reasonObj.reason;
       teacher.type = teacher.reasonObj.type;
@@ -236,6 +284,15 @@ export class AdjustmentComponent implements OnInit {
       teacher.isParts = false;
 
     }
+
+  }
+
+  saveForEdit() {
+
+
+
+    this.serviceObj.addAbsentList = this.selectedTeachers;
+    this.serviceObj.addExceptionList = this.selectedExemptedTeachers;
 
   }
 }

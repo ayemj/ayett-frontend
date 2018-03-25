@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '../auth/authentication.service';
+import { ServiceService } from '../service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
 
   form: FormGroup;
   loading: boolean = false;
-  constructor(private authService: AuthenticationService,private router: Router, private fb: FormBuilder, private http: HttpClient) {
+  constructor(public serviceObj: ServiceService, public authService: AuthenticationService,public router: Router, public fb: FormBuilder, public http: HttpClient) {
     this.createForm();
    }
 
@@ -47,11 +48,11 @@ export class NavbarComponent implements OnInit {
       let file = event.target.files[0];
       this.form.get('teacherTT').setValue(file);
       console.log(file);
-
+      
     }
   }
 
-  private prepareSave(): any {
+  public prepareSave(): any {
     let input = new FormData();
     input.append('studentTimeTable', this.form.get('classTT').value);
     input.append('teacherTimeTable', this.form.get('teacherTT').value);
@@ -59,7 +60,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onSubmit() {
-
+    
     const formModel = this.prepareSave();
     this.loading = true;
     // this.http.post('apiUrl', formModel)
@@ -70,10 +71,10 @@ export class NavbarComponent implements OnInit {
     console.log(formModel);
     formModel.forEach(element => {
       console.log(element);
-
+      
     });
-
-    this.http.post('https://infinite-escarpment-72745.herokuapp.com/UploadFiles/uploadTimeTable', formModel, httpOptions)
+    
+    this.http.post('http://localhost:8080/UploadFiles/uploadTimeTable', formModel, httpOptions)
       .subscribe(
         res => {
           alert('done!');
@@ -81,7 +82,7 @@ export class NavbarComponent implements OnInit {
         },
         err => {
           console.log(err);
-
+          
           console.log("Error occured");
           this.loading = false;
         }
