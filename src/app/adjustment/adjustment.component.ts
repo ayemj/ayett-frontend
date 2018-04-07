@@ -286,7 +286,7 @@ export class AdjustmentComponent implements OnInit {
       if (myForm.controls.exceptionReason.value && myForm.controls.exceptionInTime.value && myForm.controls.exceptionOutTime.value && myForm.controls.exceptionInTime.value < myForm.controls.exceptionOutTime.value) {
         return true;
       } else {
-        alert("In Time should be less than Out Time for " + this.teacherList[i].teacherName);
+        alert("In Time should be less than Out Time for " + this.restOfTeacherList[i].teacherName);
         return false;
       }
     }
